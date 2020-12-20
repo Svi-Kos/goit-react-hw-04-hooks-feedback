@@ -1,0 +1,5 @@
+[
+  { "id": "id-1", "label": "good" },
+  { "id": "id-2", "label": "neutral" },
+  { "id": "id-3", "label": "bad" }
+]
