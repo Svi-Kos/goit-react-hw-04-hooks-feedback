@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import './App.css';
 import SectionFeedbackWidget from './components/FeedbackWidget/SectionFeedbackWidget';
 import FeedbackOptions from '../src/components/FeedbackOptions/FeedbackOptions';
@@ -6,53 +6,64 @@ import Statistics from 'components/Statistics/Statistics';
 import statOptions from '../src/statOptions.json';
 import Notification from 'components/Notification/Notification';
 
-class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+function App() {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  const total = good + neutral + bad;
+  const positivePercentage = Math.round((good / total) * 100);
+
+  const onLeaveFeedback = option => {
+    if (option === 'good') {
+      setGood(good + 1);
+    }
+
+    if (option === 'neutral') {
+      setNeutral(neutral + 1);
+    }
+
+    if (option === 'bad') {
+      setBad(bad + 1);
+    }
   };
 
-  showStatistics = () => {
-    this.setState({ visible: true });
+  const showStatistics = () => {
+    setVisible(true);
   };
 
-  onLeaveFeedback = option => {
-    this.setState(prevState => ({
-      [option]: prevState[option] + 1,
-    }));
-  };
+  return (
+    <>
+      <SectionFeedbackWidget title="Please leave feedback">
+        <FeedbackOptions
+          options={statOptions}
+          onLeaveFeedback={onLeaveFeedback}
+          showStatistics={showStatistics}
+        />
+        {!visible && <Notification message="No feedback given"></Notification>}
 
-  render() {
-    const total = this.state.good + this.state.neutral + this.state.bad;
-    const positivePercentage = Math.round((this.state.good / total) * 100);
-
-    return (
-      <>
-        <SectionFeedbackWidget title="Please leave feedback">
-          <FeedbackOptions
-            options={statOptions}
-            onLeaveFeedback={this.onLeaveFeedback}
-            showStatistics={this.showStatistics}
+        {visible && (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positivePercentage={positivePercentage}
           />
-
-          {!this.state.visible && (
-            <Notification message="No feedback given"></Notification>
-          )}
-
-          {this.state.visible && (
-            <Statistics
-              good={this.state.good}
-              neutral={this.state.neutral}
-              bad={this.state.bad}
-              total={total}
-              positivePercentage={positivePercentage}
-            />
-          )}
-        </SectionFeedbackWidget>
-      </>
-    );
-  }
+        )}
+      </SectionFeedbackWidget>
+    </>
+  );
 }
 
 export default App;
+
+// const [state, setState] = useState({
+//   good: 0,
+//   neutral: 0,
+//   bad: 0,
+// });
+// const onLeaveFeedback = option => {
+// setState(prevState => ({ ...prevState, [option]: prevState[option] + 1 }));
+// }
