@@ -16,16 +16,21 @@ function App() {
   const positivePercentage = Math.round((good / total) * 100);
 
   const onLeaveFeedback = option => {
-    if (option === 'good') {
-      setGood(good + 1);
-    }
+    switch (option) {
+      case 'good':
+        setGood(good + 1);
+        break;
 
-    if (option === 'neutral') {
-      setNeutral(neutral + 1);
-    }
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
 
-    if (option === 'bad') {
-      setBad(bad + 1);
+      case 'bad':
+        setBad(bad + 1);
+        break;
+
+      default:
+        return;
     }
   };
 
