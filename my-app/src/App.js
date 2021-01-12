@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import SectionFeedbackWidget from './components/FeedbackWidget/SectionFeedbackWidget';
 import FeedbackOptions from '../src/components/FeedbackOptions/FeedbackOptions';
@@ -46,7 +46,7 @@ function App() {
           onLeaveFeedback={onLeaveFeedback}
           showStatistics={showStatistics}
         />
-        {!visible && <Notification message="No feedback given"></Notification>}
+        {!visible && <Notification message="No feedback given" />}
 
         {visible && (
           <Statistics
